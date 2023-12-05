@@ -4,6 +4,7 @@ mod day1;
 mod day2;
 mod day3;
 mod day4;
+mod day5;
 
 fn main() {
     let args: Vec<String> = std::env::args().collect();
@@ -24,6 +25,7 @@ fn main() {
         "day2" => handle_day(day2::part1, day2::part2, &puzzle_input, part),
         "day3" => handle_day(day3::part1, day3::part2, &puzzle_input, part),
         "day4" => handle_day(day4::part1, day4::part2, &puzzle_input, part),
+        "day5" => handle_day(day5::part1, day5::part2, &puzzle_input, part),
         _ => eprintln!("Invalid day"),
     }
 }
