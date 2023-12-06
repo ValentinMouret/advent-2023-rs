@@ -37,13 +37,16 @@ fn solve(problem: Problem) -> u64 {
 
 pub fn part1(l: &str) -> u32 {
     let res: Vec<Vec<u64>> = l.lines().take(2).map(parse_nums).collect();
-    let times = res[0].clone();
-    let distances = res[1].clone();
+    let times = &res[0];
+    let distances = &res[1];
 
     let res: u64 = times
         .into_iter()
         .zip(distances.into_iter())
-        .map(|(time, distance)| Problem { time, distance })
+        .map(|(time, distance)| Problem {
+            time: *time,
+            distance: *distance,
+        })
         .map(solve)
         .product();
 
