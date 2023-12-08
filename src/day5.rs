@@ -1,6 +1,6 @@
-fn parse_seeds_1(l: &str) -> Vec<u32> {
+fn parse_seeds_1(l: &str) -> Vec<u64> {
     l.split(" ")
-        .filter_map(|l| match l.parse::<u32>() {
+        .filter_map(|l| match l.parse::<u64>() {
             Ok(n) => Some(n),
             _ => None,
         })
@@ -9,21 +9,21 @@ fn parse_seeds_1(l: &str) -> Vec<u32> {
 
 #[derive(Debug, PartialEq, Clone)]
 struct Step {
-    destination: u32,
-    source: u32,
-    size: u32,
+    destination: u64,
+    source: u64,
+    size: u64,
 }
 
 impl Step {
-    fn is_in_source(&self, x: u32) -> bool {
+    fn is_in_source(&self, x: u64) -> bool {
         self.source <= x && x <= self.source + self.size
     }
 
-    fn is_in_destination(&self, x: u32) -> bool {
+    fn is_in_destination(&self, x: u64) -> bool {
         self.destination <= x && x <= self.destination + self.size
     }
 
-    fn source_to_destination(&self, x: u32) -> Option<u32> {
+    fn source_to_destination(&self, x: u64) -> Option<u64> {
         if self.is_in_source(x) {
             Some(self.destination + x - self.source)
         } else {
@@ -31,7 +31,7 @@ impl Step {
         }
     }
 
-    fn destination_to_source(&self, x: u32) -> Option<u32> {
+    fn destination_to_source(&self, x: u64) -> Option<u64> {
         if self.is_in_destination(x) {
             Some(self.source + x - self.destination)
         } else {
@@ -46,7 +46,7 @@ struct Stage {
 }
 
 impl Stage {
-    fn forward(&self, x: u32) -> u32 {
+    fn forward(&self, x: u64) -> u64 {
         (&self.steps)
             .into_iter()
             .find_map(|s| s.source_to_destination(x))
@@ -54,7 +54,7 @@ impl Stage {
             .unwrap()
     }
 
-    fn backward(&self, x: u32) -> u32 {
+    fn backward(&self, x: u64) -> u64 {
         (&self.steps)
             .into_iter()
             .rev()
@@ -65,7 +65,7 @@ impl Stage {
 }
 
 fn parse_step(l: &str) -> Step {
-    let vals: Vec<u32> = l.split(" ").map(|n| n.parse::<u32>().unwrap()).collect();
+    let vals: Vec<u64> = l.split(" ").map(|n| n.parse::<u64>().unwrap()).collect();
     Step {
         destination: vals[0],
         source: vals[1],
@@ -81,14 +81,14 @@ fn parse_stage(i: &str) -> Stage {
     }
 }
 
-fn parse_input_1(i: &str) -> (Vec<u32>, Vec<Stage>) {
+fn parse_input_1(i: &str) -> (Vec<u64>, Vec<Stage>) {
     let mut blocks = i.split("\n\n");
     let seeds = parse_seeds_1(blocks.next().unwrap());
 
     (seeds, blocks.map(parse_stage).collect())
 }
 
-pub fn part1(i: &str) -> u32 {
+pub fn part1(i: &str) -> u64 {
     let (seeds, stages) = parse_input_1(i);
 
     seeds
@@ -105,12 +105,12 @@ pub fn part1(i: &str) -> u32 {
 
 #[derive(Clone)]
 struct Range {
-    start: u32,
-    end: u32,
+    start: u64,
+    end: u64,
 }
 
 impl Range {
-    fn contains(&self, x: u32) -> bool {
+    fn contains(&self, x: u64) -> bool {
         self.start <= x && x <= self.end
     }
 }
@@ -135,10 +135,10 @@ fn parse_input_2(i: &str) -> (Vec<Range>, Vec<Stage>) {
     (seeds, blocks.map(parse_stage).collect())
 }
 
-pub fn part2(i: &str) -> u32 {
+pub fn part2(i: &str) -> u64 {
     let (seeds, stages) = parse_input_2(i);
 
-    let mut y: u32 = 0;
+    let mut y: u64 = 0;
     loop {
         let x = stages
             .clone()

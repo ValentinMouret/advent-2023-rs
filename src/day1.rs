@@ -14,8 +14,12 @@
 
 use std::collections::HashMap;
 
-fn parse_row_1(row: &str) -> u32 {
-    let digits: Vec<u32> = row.chars().filter_map(|d| d.to_digit(10)).collect();
+fn parse_row_1(row: &str) -> u64 {
+    let digits: Vec<u64> = row
+        .chars()
+        .filter_map(|d| d.to_digit(10))
+        .map(|n| n as u64)
+        .collect();
 
     let (first_digit, last_digit) = match (digits.first(), digits.last()) {
         (Some(&f), Some(&s)) => (f, s),
@@ -29,11 +33,11 @@ fn parse_row_1(row: &str) -> u32 {
     first_digit * 10 + last_digit
 }
 
-pub fn part1(input: &str) -> u32 {
+pub fn part1(input: &str) -> u64 {
     input.lines().map(parse_row_1).fold(0, |acc, n| acc + n)
 }
 
-const KEY_VALUE_PAIRS: &[(&str, u32)] = &[
+const KEY_VALUE_PAIRS: &[(&str, u64)] = &[
     ("one", 1),
     ("two", 2),
     ("thre", 3),
@@ -54,14 +58,14 @@ const KEY_VALUE_PAIRS: &[(&str, u32)] = &[
     ("9", 9),
 ];
 
-fn parse_row_2(row: &str, map: &HashMap<&str, u32>) -> u32 {
+fn parse_row_2(row: &str, map: &HashMap<&str, u64>) -> u64 {
     let number_idx = map.into_iter().flat_map(|(number_str, number_value)| {
         vec![
             (number_value, row.find(number_str)),
             (number_value, row.rfind(number_str)),
         ]
     });
-    let mut digits: Vec<(&u32, Option<usize>)> =
+    let mut digits: Vec<(&u64, Option<usize>)> =
         number_idx.filter(|(_, idx)| idx.is_some()).collect();
     digits.sort_by(|(_, idx1), (_, idx2)| idx1.cmp(idx2));
 
@@ -74,8 +78,8 @@ fn parse_row_2(row: &str, map: &HashMap<&str, u32>) -> u32 {
     first_digit * 10 + last_digit
 }
 
-pub fn part2(input: &str) -> u32 {
-    let mapper: HashMap<&str, u32> = KEY_VALUE_PAIRS.iter().copied().collect();
+pub fn part2(input: &str) -> u64 {
+    let mapper: HashMap<&str, u64> = KEY_VALUE_PAIRS.iter().copied().collect();
     input
         .lines()
         .map(|row| parse_row_2(row, &mapper))
@@ -103,8 +107,8 @@ mod tests {
     #[test]
     fn test_parse_row_2() {
         let test_row = "eightwo3";
-        let mapper: HashMap<&str, u32> = KEY_VALUE_PAIRS.iter().copied().collect();
-        let parsed: u32 = parse_row_2(test_row, &mapper);
+        let mapper: HashMap<&str, u64> = KEY_VALUE_PAIRS.iter().copied().collect();
+        let parsed: u64 = parse_row_2(test_row, &mapper);
         assert_eq!(parsed, 83);
     }
 

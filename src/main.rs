@@ -34,8 +34,8 @@ fn main() {
 
 fn handle_day<F, G>(part1: F, part2: G, input: &str, part: Option<&String>)
 where
-    F: Fn(&str) -> u32,
-    G: Fn(&str) -> u32,
+    F: Fn(&str) -> u64,
+    G: Fn(&str) -> u64,
 {
     let res = if part == Some(&"part2".to_string()) {
         part2(input)

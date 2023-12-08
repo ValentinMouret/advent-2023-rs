@@ -1,21 +1,21 @@
-use std::{collections::HashMap, u32};
+use std::{collections::HashMap, u64};
 
-fn parse_nums(nums: &str) -> Vec<u32> {
+fn parse_nums(nums: &str) -> Vec<u64> {
     nums.split(" ")
         .filter(|n| !n.is_empty())
-        .map(|n| n.parse::<u32>().unwrap())
+        .map(|n| n.parse::<u64>().unwrap())
         .collect()
 }
 
-fn parse_line(l: &str) -> (Vec<u32>, Vec<u32>) {
+fn parse_line(l: &str) -> (Vec<u64>, Vec<u64>) {
     let right_side = l.split(": ").nth(1).unwrap();
     let matches: Vec<&str> = right_side.split(" | ").collect();
     (parse_nums(matches[0]), parse_nums(matches[1]))
 }
 
-const TWO: u32 = 2;
+const TWO: u64 = 2;
 
-pub fn part1(i: &str) -> u32 {
+pub fn part1(i: &str) -> u64 {
     i.lines()
         .map(parse_line)
         .map(|(winning, hand)| hand.into_iter().filter(|c| winning.contains(c)).count())
@@ -23,16 +23,16 @@ pub fn part1(i: &str) -> u32 {
             if c == 0 {
                 0
             } else {
-                let x: u32 = c.try_into().unwrap();
-                TWO.pow(x - 1)
+                let x: u64 = c.try_into().unwrap();
+                TWO.pow((x - 1).try_into().unwrap())
             }
         })
         .sum()
 }
 
-pub fn part2(i: &str) -> u32 {
-    let mut card_instances: HashMap<usize, u32> = HashMap::new();
-    let mut card_copies: HashMap<usize, u32> = HashMap::new();
+pub fn part2(i: &str) -> u64 {
+    let mut card_instances: HashMap<usize, u64> = HashMap::new();
+    let mut card_copies: HashMap<usize, u64> = HashMap::new();
 
     let matches = i
         .lines()
@@ -51,7 +51,7 @@ pub fn part2(i: &str) -> u32 {
         }
     }
 
-    card_copies.values().sum::<u32>() + card_instances.values().sum::<u32>()
+    card_copies.values().sum::<u64>() + card_instances.values().sum::<u64>()
 }
 
 #[cfg(test)]

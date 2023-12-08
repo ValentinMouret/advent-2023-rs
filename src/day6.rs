@@ -35,7 +35,7 @@ fn solve(problem: Problem) -> u64 {
     (x2.ceil() as u64 - 1) - (x1.floor() as u64 + 1) + 1
 }
 
-pub fn part1(l: &str) -> u32 {
+pub fn part1(l: &str) -> u64 {
     let res: Vec<Vec<u64>> = l.lines().take(2).map(parse_nums).collect();
     let times = &res[0];
     let distances = &res[1];
@@ -50,14 +50,14 @@ pub fn part1(l: &str) -> u32 {
         .map(solve)
         .product();
 
-    res as u32
+    res as u64
 }
 
-pub fn part2(l: &str) -> u32 {
+pub fn part2(l: &str) -> u64 {
     let res: Vec<u64> = l.lines().take(2).map(parse_nums_2).collect();
     let time = res[0];
     let distance = res[1];
-    solve(Problem { time, distance }) as u32
+    solve(Problem { time, distance }) as u64
 }
 
 #[cfg(test)]

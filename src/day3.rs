@@ -14,12 +14,12 @@ struct Num<T> {
 
 struct Engine {
     symbols: Vec<Symbol>,
-    rows: Vec<Vec<Num<u32>>>,
+    rows: Vec<Vec<Num<u64>>>,
 }
 
 impl Engine {
-    fn find_neigbors(&self, s: &Symbol) -> Vec<u32> {
-        let mut matches: Vec<u32> = Vec::new();
+    fn find_neigbors(&self, s: &Symbol) -> Vec<u64> {
+        let mut matches: Vec<u64> = Vec::new();
         let last_row_id = self.rows.len();
 
         let mut adjacent_row_ids: Vec<usize> = Vec::new();
@@ -49,7 +49,7 @@ impl Engine {
     }
 }
 
-fn parse_line(line: &str, line_nb: usize) -> (Vec<Num<u32>>, Vec<Symbol>) {
+fn parse_line(line: &str, line_nb: usize) -> (Vec<Num<u64>>, Vec<Symbol>) {
     let mut nums: Vec<Num<String>> = Vec::new();
     let mut symbols: Vec<Symbol> = Vec::new();
 
@@ -92,10 +92,10 @@ fn parse_line(line: &str, line_nb: usize) -> (Vec<Num<u32>>, Vec<Symbol>) {
         }
     }
 
-    let numbers: Vec<Num<u32>> = _numbers
+    let numbers: Vec<Num<u64>> = _numbers
         .into_iter()
-        .map(|f| Num::<u32> {
-            value: f.value.parse::<u32>().unwrap(),
+        .map(|f| Num::<u64> {
+            value: f.value.parse::<u64>().unwrap(),
             start_column: f.start_column,
             end_column: f.end_column,
         })
@@ -122,10 +122,10 @@ fn parse_input(input: &str) -> Engine {
         )
 }
 
-pub fn part1(input: &str) -> u32 {
+pub fn part1(input: &str) -> u64 {
     let engine = parse_input(input);
 
-    let mut matches: Vec<u32> = Vec::new();
+    let mut matches: Vec<u64> = Vec::new();
 
     for symbol in &engine.symbols {
         let mut neighbors = engine.find_neigbors(&symbol);
@@ -135,10 +135,10 @@ pub fn part1(input: &str) -> u32 {
     matches.into_iter().sum()
 }
 
-pub fn part2(input: &str) -> u32 {
+pub fn part2(input: &str) -> u64 {
     let engine = parse_input(input);
 
-    let mut gear_ratios: Vec<u32> = Vec::new();
+    let mut gear_ratios: Vec<u64> = Vec::new();
 
     for symbol in &engine.symbols {
         if !symbol.is_star {
@@ -197,12 +197,12 @@ mod test {
         assert_eq!(
             result.0,
             vec![
-                Num::<u32> {
+                Num::<u64> {
                     value: 467,
                     start_column: 0,
                     end_column: 2,
                 },
-                Num::<u32> {
+                Num::<u64> {
                     value: 114,
                     start_column: 5,
                     end_column: 7,
@@ -218,7 +218,7 @@ mod test {
         let result = parse_line(test_input, 4);
         assert_eq!(
             result.0,
-            vec![Num::<u32> {
+            vec![Num::<u64> {
                 value: 617,
                 start_column: 0,
                 end_column: 2,

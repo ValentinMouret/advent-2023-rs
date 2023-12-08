@@ -2,13 +2,13 @@ use regex::Regex;
 
 #[derive(Debug, PartialEq, Clone, Copy)]
 struct Set {
-    green: u32,
-    blue: u32,
-    red: u32,
+    green: u64,
+    blue: u64,
+    red: u64,
 }
 
 struct Game {
-    id: u32,
+    id: u64,
     sets: Vec<Set>,
 }
 
@@ -22,16 +22,16 @@ fn parse_line(line: &str) -> Game {
     let sets: Vec<Set> = line
         .split(";")
         .map(|s| {
-            let blue: u32 = match blue_regex.captures(s) {
-                Some(caps) => caps[1].parse::<u32>().unwrap(),
+            let blue: u64 = match blue_regex.captures(s) {
+                Some(caps) => caps[1].parse::<u64>().unwrap(),
                 None => 0,
             };
-            let green: u32 = match green_regex.captures(s) {
-                Some(caps) => caps[1].parse::<u32>().unwrap(),
+            let green: u64 = match green_regex.captures(s) {
+                Some(caps) => caps[1].parse::<u64>().unwrap(),
                 None => 0,
             };
-            let red: u32 = match red_regex.captures(s) {
-                Some(caps) => caps[1].parse::<u32>().unwrap(),
+            let red: u64 = match red_regex.captures(s) {
+                Some(caps) => caps[1].parse::<u64>().unwrap(),
                 None => 0,
             };
             Set { green, blue, red }
@@ -53,7 +53,7 @@ fn is_possible(game: &Game, constraints: &Set) -> bool {
         .is_none()
 }
 
-pub fn part1(input: &str) -> u32 {
+pub fn part1(input: &str) -> u64 {
     let constraints = Set {
         green: 13,
         blue: 14,
@@ -67,7 +67,7 @@ pub fn part1(input: &str) -> u32 {
         .sum()
 }
 
-pub fn part2(input: &str) -> u32 {
+pub fn part2(input: &str) -> u64 {
     input
         .lines()
         .map(parse_line)
